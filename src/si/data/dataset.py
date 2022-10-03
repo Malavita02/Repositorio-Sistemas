@@ -48,19 +48,35 @@ class Dataset:
         )
         
     def remove_na(self):
+        #não é para usar o dropna 
         df = pd.DataFrame(self.X, columns=self.features)
         df.dropna()
         return df
     
     def replace_na(self, val):
+        #não é para usar o fillna
         df = pd.DataFrame(self.X, columns=self.features)
         return df.fillna(val)    
 
 def new_read_csv(filename, sep, features, label):
-    return pd.read_csv(filename, delimiter=sep)#, features, label)
+    #fazer varios if para se tem features ou labels 
+    data = pd.read_csv(filename, sep=sep)
+    if features and label:
+        features = features
+        label = label
+        #X = 
+    return #pd.read_csv(filename, delimiter=sep)#, features, label)
 
 def read_data_file(filename, sep, label):
-    return np.genfromtxt(filename, delimiter=sep)#,)
+    data = pd.DataFrame(dataset.X)
+
+    if features:
+        data.columns = dataset.features
+    
+    if label:
+        data[dataset.label] = dataset.y
+
+    return #np.genfromtxt(filename, delimiter=sep)#,)
 
 if __name__ == "__main__":
     Dataset.X = np.array([[1,np.NAN,3],[1,2,3]])
