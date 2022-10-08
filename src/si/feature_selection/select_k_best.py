@@ -17,3 +17,7 @@ class SelectKBbest:
         idxs = np.argsort(self.F)[-self.k:]
         features = np.array(dataset.features)[idxs]
         return Dataset(X=dataset.X[:, idxs], y = dataset.y, features = list(features), label = dataset.label)
+
+    def fit_tranform(self, dataset):
+        self.fit(dataset)
+        self.tranform(dataset)
