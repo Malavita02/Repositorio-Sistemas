@@ -5,8 +5,8 @@ import pandas as pd
 iris = pd.read_csv(r"C:\Users\Tiago\GitHub\Repositorio de Sistemas\Repositorio-Sistemas\datasets\iris.csv")
 
 #1.2 - Seleciona a primeira variável independente e verifica a dimensão do array resultante.
-print(iris.loc[0])
-print(iris.loc[0].ndim)
+print(iris.loc[0][0])
+print(np.array(iris.iloc[0]).ndim)
 
 #1.3 - Seleciona as últimas 5 amostras do iris dataset. Qual a média das últimas 5 amostras para cada variável independente/feature?
 ultimas5 = iris[-5:]

@@ -1,4 +1,3 @@
-from cProfile import label
 import numpy as np
 import pandas as pd
 import io
@@ -44,8 +43,7 @@ class Dataset:
     def summary(self):
         return pd.DataFrame(
             {"mean":self.get_mean(Dataset),
-            "median": self.get_median(Dataset)}
-        )
+            "median": self.get_median(Dataset)})
         
     def remove_na(self):
         #não é para usar o dropna 
@@ -58,29 +56,56 @@ class Dataset:
         df = pd.DataFrame(self.X, columns=self.features)
         return df.fillna(val)    
 
-def new_read_csv(filename, sep, features, label):
-    #fazer varios if para se tem features ou labels 
-    data = pd.read_csv(filename, sep=sep)
-    if features and label:
-        features = features
-        label = label
-        #X = 
-    return #pd.read_csv(filename, delimiter=sep)#, features, label)
+    def new_read_csv(self, filename, sep, features, label):
+        #ainda não testei
+        data = pd.read_csv(filename, sep=sep)
+        if features and label:
+            self.features = features
+            self.label = label
+            self.X = data[features]
+            self.y = data[label]
+            
+        elif features and not label:
+            self.features = features
+            self.label = None
+            self.X = data[features]
+            self.y = None
+        
+        elif label and not features:
+            self.features = None
+            self.label = label
+            self.X = None
+            self.y = data[label]
+            
+        else:
+            self.features = None
+            self.label = None
+            self.X = None
+            self.y = None
 
-def read_data_file(filename, sep, label):
-    data = pd.DataFrame(dataset.X)
+        return Dataset.print_dataset()
 
-    if features:
-        data.columns = dataset.features
-    
-    if label:
-        data[dataset.label] = dataset.y
+    def read_data_file(self, filename, sep, label):
+        #ainda não testei
+        data = np.genfromtxt(filename, delimiter=sep)
+        
+        if label:
+            self.X = data.loc[1:-1]
+            self.y = data.loc[-1] 
+            self.features = data.iloc[0][:-1]
+            self.label = data.iloc[0][-1]
+        
+        else:
+            self.X = data.loc[1:]
+            self.y = None
+            self.features = data.iloc[0]
+            self.label = None
 
-    return #np.genfromtxt(filename, delimiter=sep)#,)
+        return Dataset.print_dataset()
 
 if __name__ == "__main__":
     Dataset.X = np.array([[1,np.NAN,3],[1,2,3]])
-    Dataset.y = np.array([1,2,3])
+    Dataset.y = np.array([1,2])
     Dataset.features = np.array(["Ola","Adeus","Ate logo"])
     Dataset.label = np.array("y")
     print(Dataset.get_shape(Dataset))
@@ -95,4 +120,5 @@ if __name__ == "__main__":
     #Dataset.remove_na(Dataset)
     Dataset.replace_na(Dataset, 0)
     Dataset.print_dataset(Dataset)
+    print(Dataset.X)
 
