@@ -1,7 +1,9 @@
-from scipy import stats
-from si.data.dataset import Dataset
+class F_classification:
+    def __init__(self) -> None:
+        pass
 
-def f_classification(dataset):
-    data = Dataset.get_classes(dataset)
-    F, p = stats.f_oneway(data)
-    return F, p
+    def alguma_coisa(self):
+        classes = dataset.get_classes()
+        groups = [dataset.X[dataset.y == c] for c in classes]
+        F, p = stats.f_oneway(*groups)
+        return F, p
