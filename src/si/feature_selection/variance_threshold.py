@@ -1,25 +1,26 @@
+from pyexpat import features
 import numpy as np
-import pandas as pd
-from si.data.dataset import Dataset
-from statistics import f_classification
 
 class VarianceThreshold:
     def __init__(self, threshold) -> None:
         self.threshold = threshold
-        self.variance = []
+        self.variance = None
 
     def fit(self, dataset):
-        for i in dataset.X:
-            self.variance.append(dataset[i].var())
+        #variance = Dataset.get_var()
+        variance = np.var(dataset.X)
+        self.variance = variance
         return self
 
-    def tranform(self):
-        X = []
-        for x in self.variance:
-            if x > self.threshold:
-                X.append(x)
-        return X
-    
-    def fit_transform(self, dataset):
-        self.fit(dataset)
-        self.tranform()
+    def transform(self, dataset):
+        mask = self.variance > self.threshold
+        new_x = dataset.X[:,mask]
+        features = np.array()#falta acabar
+        return Dataset(new_x, dataset.y,features)
+
+if __name__ == "__main__":
+    from si.data.dataset import Dataset
+    dataset = Dataset(X = np.array([[0, 2, 0, 3],
+                        0, 1, 4, 3],
+                        0, 6, 3, 2))
+    #acabar o Dataset e testar o init e transform
