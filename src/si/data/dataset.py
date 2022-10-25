@@ -11,7 +11,7 @@ class Dataset:
         self.label = label
 
     def print_dataset(self):
-        df = pd.DataFrame(self.X, columns=self.features)
+        df = pd.DataFrame(self.X, columns=self.features, index=self.y)
         return print(df.to_string())
 
     def get_shape(self):    
