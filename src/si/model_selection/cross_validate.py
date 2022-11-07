@@ -4,7 +4,7 @@ from si.model_selection.split import train_test_split
 sys.path.insert(0, 'src/si')
 from data.dataset import Dataset
 
-def cross_validate(model, dataset: Dataset, scoring, cv : int = 3, test_size: float = 0.2)-> Dict[str, List[float]]:
+def cross_validate(model, dataset: Dataset, scoring, cv : int = 3, test_size: float = 0.2)-> dict [str, list[float]]:
     scores = {
         "seeds": [],
         "train": [],
@@ -16,7 +16,7 @@ def cross_validate(model, dataset: Dataset, scoring, cv : int = 3, test_size: fl
     
         scores["seeds"].append(random_state)
 
-        #train, test = train_test_split()
+        train, test = train_test_split()
         model.fit(train)
 
         if scoring is None:
