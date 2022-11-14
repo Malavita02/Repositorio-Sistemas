@@ -4,6 +4,7 @@ from si.model_selection.cross_validate import cross_validate
 from si.model_selection.split import train_test_split
 sys.path.insert(0, 'src/si')
 from data.dataset import Dataset
+import itertools
 
 def grid_search(model, dataset: Dataset, parameter_grid, scoring, cv : int = 3, test_size : float = 0.2)-> Dict[str, List[float]]:
     #validade the parameter grid
