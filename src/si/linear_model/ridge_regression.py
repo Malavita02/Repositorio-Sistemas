@@ -1,7 +1,8 @@
 import numpy as np
-
-from si.data.dataset import Dataset
-from si.metrics.mse import mse
+import sys
+sys.path.insert(0, 'src/si')
+from data.dataset import Dataset
+from metrics.mse import mse
 
 
 class RidgeRegression:
@@ -47,6 +48,7 @@ class RidgeRegression:
         # attributes
         self.theta = None
         self.theta_zero = None
+        self.cost_history = {}
 
     def fit(self, dataset: Dataset) -> 'RidgeRegression':
         """
@@ -62,7 +64,7 @@ class RidgeRegression:
         self: RidgeRegression
             The fitted model
         """
-        m, n = dataset.shape()
+        m, n = dataset.get_shape()
 
         # initialize the model parameters
         self.theta = np.zeros(n)
@@ -82,6 +84,7 @@ class RidgeRegression:
             # updating the model parameters
             self.theta = self.theta - gradient - penalization_term
             self.theta_zero = self.theta_zero - (self.alpha * (1 / m)) * np.sum(y_pred - dataset.y)
+            self.cost_history[i] = self.cost(dataset)
 
         return self
 
@@ -137,9 +140,7 @@ class RidgeRegression:
 
 
 if __name__ == '__main__':
-    # import dataset
-    from si.data.dataset import Dataset
-
+   
     # make a linear dataset
     X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]])
     y = np.dot(X, np.array([1, 2])) + 3

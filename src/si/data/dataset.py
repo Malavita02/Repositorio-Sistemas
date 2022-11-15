@@ -1,10 +1,10 @@
 import numpy as np
 import pandas as pd
-import io
+from typing import Tuple, Sequence
 
 
 class Dataset:
-    def __init__(self, X, y, features, label):
+    def __init__(self, X, y = None, features = None, label = None):
         self.X = X
         self.y = y
         self.features = features
@@ -15,7 +15,7 @@ class Dataset:
         return print(df.to_string())
 
     def get_shape(self):    
-        return f"shape: {self.X.shape}"
+        return self.X.shape
     
     def has_label(self):
         if self.y is None:
@@ -102,6 +102,35 @@ class Dataset:
             self.label = None
 
         return Dataset.print_dataset()
+    
+    @classmethod
+    def from_random(cls,
+                    n_samples: int,
+                    n_features: int,
+                    n_classes: int = 2,
+                    features: Sequence[str] = None,
+                    label: str = None):
+        """
+        Creates a Dataset object from random data
+        Parameters
+        ----------
+        n_samples: int
+            The number of samples
+        n_features: int
+            The number of features
+        n_classes: int
+            The number of classes
+        features: list of str
+            The feature names
+        label: str
+            The label name
+        Returns
+        -------
+        Dataset
+        """
+        X = np.random.rand(n_samples, n_features)
+        y = np.random.randint(0, n_classes, n_samples)
+        return cls(X, y, features=features, label=label)
 
 if __name__ == "__main__":
     Dataset.X = np.array([[1,np.NAN,3],[1,2,3]])
