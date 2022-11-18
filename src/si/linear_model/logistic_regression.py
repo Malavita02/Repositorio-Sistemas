@@ -1,3 +1,4 @@
+#falta o 6.2 e 6.3
 import numpy as np
 import sys
 sys.path.insert(0, 'src/si')
@@ -79,3 +80,4 @@ if __name__ == '__main__':
 
     # cost history
     #print(model.cost_history)
+
