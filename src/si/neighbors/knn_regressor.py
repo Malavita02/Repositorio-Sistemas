@@ -3,7 +3,7 @@ import sys
 sys.path.insert(0, 'src/si')
 from data.dataset import Dataset
 #falta chamar euclidean_distance com callable
-from metrics import rmse
+from metrics.rmse import rmse
 
 class KNNRegressor:
     def __init__(self, k, distance) -> float:
