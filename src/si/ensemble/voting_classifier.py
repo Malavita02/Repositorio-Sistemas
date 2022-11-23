@@ -1,7 +1,7 @@
 import numpy as np
 import sys
 sys.path.insert(0, 'src/si')
-from metrics import accuracy
+from metrics.accuracy import accuracy
 from data.dataset import Dataset
 
 class VotingClassifier:
@@ -28,7 +28,7 @@ class VotingClassifier:
 
         return accuracy(dataset.y, self.predict(dataset))
 
-#Nao esta a funcionar por causa do KNNClassifier
+
 
 if __name__ == '__main__':
     # import dataset
