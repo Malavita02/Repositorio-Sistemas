@@ -1,10 +1,10 @@
 import numpy as np
 import sys
-from si.model_selection.split import train_test_split
 sys.path.insert(0, 'src/si')
+from model_selection.split import train_test_split
 from data.dataset import Dataset
 
-def cross_validate(model, dataset: Dataset, scoring, cv : int = 3, test_size: float = 0.2)-> dict [str, list[float]]:
+def cross_validate(model, dataset: Dataset, scoring = None, cv : int = 3, test_size: float = 0.2)-> dict [str, list[float]]:
     scores = {
         "seeds": [],
         "train": [],
@@ -16,7 +16,7 @@ def cross_validate(model, dataset: Dataset, scoring, cv : int = 3, test_size: fl
     
         scores["seeds"].append(random_state)
 
-        train, test = train_test_split()
+        train, test = train_test_split(dataset=dataset, test_size=test_size, random_state=random_state)
         model.fit(train)
 
         if scoring is None:
@@ -31,4 +31,19 @@ def cross_validate(model, dataset: Dataset, scoring, cv : int = 3, test_size: fl
         
         return scores
 
-#falta criar train e test e testar
+if __name__ == '__main__':
+    # import dataset
+    from data.dataset import Dataset
+    from neighbors.knn_classifier import KNNClassifier
+
+    # load and split the dataset
+    dataset_ = Dataset.from_random(600, 100, 2)
+
+    # initialize the KNN
+    knn = KNNClassifier(k=3)
+
+    # cross validate the model
+    scores_ = cross_validate(knn, dataset_, cv=5)
+
+    # print the scores
+    print(scores_)
