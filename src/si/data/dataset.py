@@ -56,52 +56,6 @@ class Dataset:
         df = pd.DataFrame(self.X, columns=self.features)
         return df.fillna(val)    
 
-    def new_read_csv(self, filename, sep, features, label):
-        #ainda não testei
-        data = pd.read_csv(filename, sep=sep)
-        if features and label:
-            self.features = features
-            self.label = label
-            self.X = data[features]
-            self.y = data[label]
-            
-        elif features and not label:
-            self.features = features
-            self.label = None
-            self.X = data[features]
-            self.y = None
-        
-        elif label and not features:
-            self.features = None
-            self.label = label
-            self.X = None
-            self.y = data[label]
-            
-        else:
-            self.features = None
-            self.label = None
-            self.X = None
-            self.y = None
-
-        return Dataset.print_dataset()
-
-    def read_data_file(self, filename, sep, label):
-        #ainda não testei
-        data = np.genfromtxt(filename, delimiter=sep)
-        
-        if label:
-            self.X = data.loc[1:-1]
-            self.y = data.loc[-1] 
-            self.features = data.iloc[0][:-1]
-            self.label = data.iloc[0][-1]
-        
-        else:
-            self.X = data.loc[1:]
-            self.y = None
-            self.features = data.iloc[0]
-            self.label = None
-
-        return Dataset.print_dataset()
     
     @classmethod
     def from_random(cls,
