@@ -1,8 +1,9 @@
 import numpy as np
 import pandas as pd
+from src.si.io.csv import read_csv
 
 #1.1 - Neste exercício, vamos usar o iris dataset. Carrega o iris.csv usando o método read apropriado para o tipo de ficheiro.
-iris = pd.read_csv(r"C:\Users\Tiago\GitHub\Repositorio de Sistemas\Repositorio-Sistemas\datasets\iris.csv")
+iris = read_csv(r"C:\Users\Tiago\GitHub\Repositorio de Sistemas\Repositorio-Sistemas\datasets\iris.csv", features= True, label= True)
 
 #1.2 - Seleciona a primeira variável independente e verifica a dimensão do array resultante.
 print(iris.loc[0][0])
