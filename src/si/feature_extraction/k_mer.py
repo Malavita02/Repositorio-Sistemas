@@ -1,8 +1,11 @@
 import numpy as np
+import pandas as pd
 import sys
 sys.path.insert(0, 'src/si')
 from data.dataset import Dataset
 import itertools
+from sklearn.preprocessing import StandardScaler
+
 
 class KMer:
     def __init__(self, k, alphabet = "ACTG") -> None:
@@ -37,12 +40,25 @@ class KMer:
         return self.transform(dataset)
 
 if __name__ == "__main__":
-    dataset_ = Dataset(X=np.array([['ACTGTTTAGCGGA', 'ACTGTTTAGCGGA']]),
+    """dataset_ = Dataset(X=np.array([['ACTGTTTAGCGGA', 'ACTGTTTAGCGGA']]),
                        y=np.array([1, 0]),
                        features=['sequence'],
                        label='label')
     k_mer_ = KMer(k=3)
     dataset_ = k_mer_.fit_transform(dataset_)
     print(dataset_.X)
-    print(dataset_.features)
-#Falta testar com as cenas da avaliação
+    print(dataset_.features)"""
+    from model_selection.split import train_test_split
+    from linear_model.logistic_regression import LogisticRegression
+
+    data = Dataset()
+    tranposter = data.new_read_csv(filename= r'/home/tiago/AulasSegundoAno/Repositorio-Sistemas/datasets/transporters.csv', sep = ",", features= "Sequence", label="label")
+    tranposter.X = StandardScaler().fit_transform(tranposter.X)
+    dataset_train, dataset_test = train_test_split(tranposter, test_size=0.2)
+    log_reg = LogisticRegression()
+    log_reg.fit(dataset_train)
+    score = log_reg.score(dataset_test)
+    print(score)
+
+
+
