@@ -1,7 +1,5 @@
 import pandas as pd
-import sys
-sys.path.insert(0, 'src/si')
-from data.dataset import Dataset
+from src.si.data.dataset import Dataset
 
 
 def read_csv(filename: str,

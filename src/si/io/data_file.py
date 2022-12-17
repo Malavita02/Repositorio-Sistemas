@@ -1,7 +1,7 @@
 import numpy as np
 import sys
 sys.path.insert(0, 'src/si')
-from data.dataset import Dataset
+from src.si.data.dataset import Dataset
 
 
 def read_data_file(filename: str,

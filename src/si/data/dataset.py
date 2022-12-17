@@ -4,7 +4,17 @@ from typing import Tuple, Sequence
 
 
 class Dataset:
-    def __init__(self, X, y = None, features = None, label = None):
+    def __init__(self, X: np.ndarray, y: np.ndarray = None, features: Sequence[str] = None, label: str = None):
+        if X is None:
+            raise ValueError("X cannot be None")
+
+        if features is None:
+            features = [str(i) for i in range(X.shape[1])]
+        else:
+            features = list(features)
+
+        if y is not None and label is None:
+            label = "y"
         self.X = X
         self.y = y
         self.features = features
@@ -23,40 +33,79 @@ class Dataset:
         else: return True
     
     def get_classes(self):
-        return f"dtype: {self.y.dtype}"
+        if self.y is None:
+            raise ValueError("Dataset does not have a label")
+        return np.unique(self.y)
 
     def get_mean(self):
-        return np.mean(self.X, axis=0)
+        return np.nanmean(self.X, axis=0)
 
     def get_variance(self):
-        return np.var(self.X, axis=0)
+        return np.nanvar(self.X, axis=0)
 
     def get_median(self):
-        return np.median(self.X, axis=0)
+        return np.nanmedian(self.X, axis=0)
     
     def get_max(self):
-        return np.max(self.X, axis=0)
+        return np.nanmax(self.X, axis=0)
     
     def get_min(self):
-        return np.min(self.X, axis=0)
+        return np.nanmin(self.X, axis=0)
 
     def summary(self):
         return pd.DataFrame(
-            {"mean":self.get_mean(Dataset),
-            "median": self.get_median(Dataset)})
+            {"mean": self.get_mean(),
+            "median": self.get_median(),
+            "min": self.get_min(),
+            "max": self.get_max(),
+            "var": self.get_variance()})
         
     def remove_na(self):
-        #não é para usar o dropna 
-        df = pd.DataFrame(self.X, columns=self.features)
-        df.dropna()
+        df = pd.DataFrame(self.X, columns=self.features).dropna(axis=0).reset_index(drop=True)
         return df
     
     def replace_na(self, val):
-        #não é para usar o fillna
         df = pd.DataFrame(self.X, columns=self.features)
-        return df.fillna(val)    
+        return df.fillna(val)
 
-    
+    @classmethod
+    def from_dataframe(cls, df: pd.DataFrame, label: str = None):
+        """
+        Creates a Dataset object from a pandas DataFrame
+        Parameters
+        ----------
+        df: pandas.DataFrame
+            The DataFrame
+        label: str
+            The label name
+        Returns
+        -------
+        Dataset
+        """
+        if label:
+            X = df.drop(label, axis=1).to_numpy()
+            y = df[label].to_numpy()
+        else:
+            X = df.to_numpy()
+            y = None
+
+        features = df.columns.tolist()
+        return cls(X, y, features=features, label=label)
+
+    def to_dataframe(self) -> pd.DataFrame:
+        """
+        Converts the dataset to a pandas DataFrame
+        Returns
+        -------
+        pandas.DataFrame
+        """
+        if self.y is None:
+            return pd.DataFrame(self.X, columns=self.features)
+        else:
+            df = pd.DataFrame(self.X, columns=self.features)
+            df[self.label] = self.y
+            return df
+
     @classmethod
     def from_random(cls,
                     n_samples: int,
@@ -85,6 +134,8 @@ class Dataset:
         X = np.random.rand(n_samples, n_features)
         y = np.random.randint(0, n_classes, n_samples)
         return cls(X, y, features=features, label=label)
+
+
 
 if __name__ == "__main__":
     Dataset.X = np.array([[1,np.NAN,3],[1,2,3]])
