@@ -1,9 +1,25 @@
 import numpy as np
-import sys
-sys.path.insert(0, 'src/si')
-from data.dataset import Dataset
+from typing import Tuple
+from si.data.dataset import Dataset
 
-def train_test_split(dataset, test_size, random_state = 22):
+def train_test_split(dataset: Dataset, test_size: float = 0.2, random_state: int = 42) -> Tuple[Dataset, Dataset]:
+    """
+    Split the dataset into training and testing sets
+    Parameters
+    ----------
+    dataset: Dataset
+        The dataset to split
+    test_size: float
+        The proportion of the dataset to include in the test split
+    random_state: int
+        The seed of the random number generator
+    Returns
+    -------
+    train: Dataset
+        The training dataset
+    test: Dataset
+        The testing dataset
+    """
     # set random state
     np.random.seed(random_state)
 
@@ -26,5 +42,3 @@ def train_test_split(dataset, test_size, random_state = 22):
     train = Dataset(dataset.X[train_idxs], dataset.y[train_idxs], features=dataset.features, label=dataset.label)
     test = Dataset(dataset.X[test_idxs], dataset.y[test_idxs], features=dataset.features, label=dataset.label)
     return train, test
-
-# Falta testar mas em principio vai dar

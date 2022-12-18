@@ -1,14 +1,45 @@
 import numpy as np
-import sys
-sys.path.insert(0, 'src/si')
-from data.dataset import Dataset
-from statistics.euclidean_distance import euclidean_distance 
+from typing import Callable
+from si.data.dataset import Dataset
+from si.statistics.euclidean_distance import euclidean_distance
 
 class KMeans:
-    def __init__(self, k, max_iter, distance = euclidean_distance):
+    """
+    It performs k-means clustering on the dataset.
+    It groups samples into k clusters by trying to minimize the distance between samples and their closest centroid.
+    It returns the centroids and the indexes of the closest centroid for each point.
+    Parameters
+    ----------
+    k: int
+        Number of clusters.
+    max_iter: int
+        Maximum number of iterations.
+    distance: Callable
+        Distance function.
+    Attributes
+    ----------
+    centroids: np.array
+        Centroids of the clusters.
+    labels: np.array
+        Labels of the clusters.
+    """
+    def __init__(self, k: int, max_iter: int = 1000, distance: Callable = euclidean_distance):
+        """
+        K-means clustering algorithm.
+        Parameters
+        ----------
+        k: int
+            Number of clusters.
+        max_iter: int
+            Maximum number of iterations.
+        distance: Callable
+            Distance function.
+        """
+        # parameters
         self.k = k
         self.max_iter = max_iter
         self.distance = distance
+        # atributes
         self.centroids = None
         self.labels = None
     
@@ -17,7 +48,7 @@ class KMeans:
         closest_index = np.argmin(distance)
         return closest_index
     
-    def fit(self, dataset, k):
+    def fit(self, dataset: Dataset) -> 'KMeans':
         seeds = np.random.permutation(dataset.get_shape()[0])[:self.k]
         self.centroids = dataset.X[seeds]
 
@@ -34,8 +65,11 @@ class KMeans:
         self.labels = labels
         return self
 
+    def _get_distances(self, sample: np.ndarray) -> np.ndarray:
+        return self.distance(sample, self.centroids)
+
     def transform(self, dataset):
-        centroid_distances = np.apply_along_axis(self.distance, axis = 1, arr = dataset.X)
+        centroid_distances = np.apply_along_axis(self._get_distances, axis = 1, arr = dataset.X)
         return centroid_distances
 
     def fit_transform(self, dataset):
@@ -46,6 +80,16 @@ class KMeans:
         return np.apply_along_axis(self.get_closest_centroid, axis=1, arr=dataset.X)
 
 if __name__ == "__main__":
+    from si.data.dataset import Dataset
+    dataset_ = Dataset.from_random(100, 5)
+
+    k_ = 3
+    kmeans = KMeans(k_)
+    res = kmeans.fit_transform(dataset_)
+    predictions = kmeans.predict(dataset_)
+    print(res.shape)
+    print(predictions.shape)
+    """
     a = KMeans(2, 10)
     dataset = Dataset(X=np.array([[0, 2, 0, 3],
                                   [0, 1, 4, 3],
@@ -53,5 +97,5 @@ if __name__ == "__main__":
                       y=np.array([0, 1, 0]),
                       features=["f1", "f2", "f3", "f4"],
                       label="y")
-    #a.init_centroids(dataset=dataset)
-    print(a.get_closest_centroid([[1, 2, 3, 4], [2, 3, 7, 9]]))
+    a.fit(dataset=dataset)
+    print(a.get_closest_centroid([[1, 2, 3, 4], [2, 3, 7, 9]]))"""
