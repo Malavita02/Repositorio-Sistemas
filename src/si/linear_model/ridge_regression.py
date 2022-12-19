@@ -1,9 +1,6 @@
 import numpy as np
-import sys
-sys.path.insert(0, 'src/si')
-from data.dataset import Dataset
-from metrics.mse import mse
-
+from si.data.dataset import Dataset
+from si.metrics.mse import mse
 
 class RidgeRegression:
     """
@@ -27,6 +24,8 @@ class RidgeRegression:
     theta_zero: float
         The model parameter, namely the intercept of the linear model.
         For example, theta_zero * 1
+    cost_history: dict
+        Stores the output of the cost function
     """
     def __init__(self, l2_penalty: float = 1, alpha: float = 0.001, max_iter: int = 1000):
         """
@@ -85,7 +84,10 @@ class RidgeRegression:
             self.theta = self.theta - gradient - penalization_term
             self.theta_zero = self.theta_zero - (self.alpha * (1 / m)) * np.sum(y_pred - dataset.y)
             self.cost_history[i] = self.cost(dataset)
-
+            # exercicio 6.3)
+            if i > 0:
+                if (self.cost_history[i-1] - self.cost_history[i]) < 1:
+                    return self
         return self
 
     def predict(self, dataset: Dataset) -> np.array:
@@ -140,7 +142,7 @@ class RidgeRegression:
 
 
 if __name__ == '__main__':
-   
+
     # make a linear dataset
     X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]])
     y = np.dot(X, np.array([1, 2])) + 3
