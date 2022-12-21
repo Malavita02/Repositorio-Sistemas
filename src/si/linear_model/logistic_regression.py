@@ -1,4 +1,3 @@
-#falta o 6.2 e 6.3
 import numpy as np
 from si.data.dataset import Dataset
 from si.statistics.sigmoid_function import sigmoid_function

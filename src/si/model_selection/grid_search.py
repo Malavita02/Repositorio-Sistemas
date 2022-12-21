@@ -1,12 +1,30 @@
-import numpy as np
-import sys
-sys.path.insert(0, 'src/si')
-from model_selection.cross_validate import cross_validate
-from model_selection.split import train_test_split
-from data.dataset import Dataset
+from typing import Callable, Tuple, Dict, List, Any
+from si.model_selection.cross_validate import cross_validate
+from si.data.dataset import Dataset
 import itertools
 
-def grid_search(model, dataset: Dataset, parameter_grid, scoring = None, cv : int = 3, test_size : float = 0.2)-> dict[str, list[float]]:
+def grid_search(model, dataset: Dataset, parameter_grid: Dict[str, Tuple], scoring: Callable = None, cv : int = 3, test_size : float = 0.2) -> List[Dict[str, Any]]:
+    """
+    Performs a grid search cross validation on a model.
+    Parameters
+    ----------
+    model
+        The model to cross validate.
+    dataset: Dataset
+        The dataset to cross validate on.
+    parameter_grid: Dict[str, Tuple]
+        The parameter grid to use.
+    scoring: Callable
+        The scoring function to use.
+    cv: int
+        The cross validation folds.
+    test_size: float
+        The test size.
+    Returns
+    -------
+    scores: List[Dict[str, List[float]]]
+        The scores of the model on the dataset.
+    """
     #validade the parameter grid
     for parameter in parameter_grid:
         if not hasattr(model, parameter):
@@ -32,8 +50,7 @@ def grid_search(model, dataset: Dataset, parameter_grid, scoring = None, cv : in
 
 if __name__ == '__main__':
     # import dataset
-    from data.dataset import Dataset
-    from linear_model.logistic_regression import LogisticRegression
+    from si.linear_model.logistic_regression import LogisticRegression
 
     # load and split the dataset
     dataset_ = Dataset.from_random(600, 100, 2)

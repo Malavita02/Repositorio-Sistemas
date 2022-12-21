@@ -1,44 +1,103 @@
 import numpy as np
-import sys
-sys.path.insert(0, 'src/si')
-from metrics.accuracy import accuracy
-from data.dataset import Dataset
+from si.metrics.accuracy import accuracy
+from si.data.dataset import Dataset
 
 class VotingClassifier:
-    def __init__(self, models) -> list:
+    """
+    Ensemble classifier that uses the majority vote to predict the class labels.
+    Parameters
+    ----------
+    models : array-like, shape = [n_models]
+        Different models for the ensemble.
+    """
+    def __init__(self, models):
+        """
+        Initialize the ensemble classifier.
+        Parameters
+        ----------
+        models: array-like, shape = [n_models]
+            Different models for the ensemble.
+        """
+        # parameters
         self.models = models
     
-    def fit(self, dataset):  
+    def fit(self, dataset) -> 'VotingClassifier':
+        """
+        Fit the models according to the given training data.
+        Parameters
+        ----------
+        dataset : Dataset
+            The training data.
+        Returns
+        -------
+        self : VotingClassifier
+            The fitted model.
+        """
         for model in self.models:
             model.fit(dataset)
         return self
-     
-    
-    def predict(self, dataset: Dataset) -> float:
+
+    def predict(self, dataset: Dataset) -> np.ndarray:
+        """
+        Predict class labels for samples in X.
+        Parameters
+        ----------
+        dataset : Dataset
+            The test data.
+        Returns
+        -------
+        y : array-like, shape = [n_samples]
+            The predicted class labels.
+        """
         #helper functions
         def _get_majority_vote(pred: np.ndarray) -> int:
+            """
+            It returns the majority vote of the given predictions
+            Parameters
+            ----------
+            pred: np.ndarray
+                The predictions to get the majority vote of
+            Returns
+            -------
+            majority_vote: int
+                The majority vote of the given predictions
+            """
+            # get the most common label
             labels, counts = np.unique(pred, return_counts = True)
             return labels[np.argmax(counts)]
 
-        predictions = np.array([model.predict(dataset) for model in self.models]).transpose()
-        #podemos nao usar o tranpose e mudar o axis para 0
-        return np.apply_along_axis(_get_majority_vote, axis=1, arr=predictions)
+        predictions = np.array([model.predict(dataset) for model in self.models])
+        return np.apply_along_axis(_get_majority_vote, axis=0, arr=predictions)
     
-    def score(self, dataset):
-
+    def score(self, dataset) -> float:
+        """
+        Returns the mean accuracy on the given test data and labels.
+        Parameters
+        ----------
+        dataset : Dataset
+            The test data.
+        Returns
+        -------
+        score : float
+            Mean accuracy
+        """
         return accuracy(dataset.y, self.predict(dataset))
 
 
 
 if __name__ == '__main__':
     # import dataset
-    from data.dataset import Dataset
-    from model_selection.split import train_test_split
-    from neighbors.knn_classifier import KNNClassifier
-    from linear_model.logistic_regression import LogisticRegression
+    from si.model_selection.split import train_test_split
+    from si.neighbors.knn_classifier import KNNClassifier
+    from si.linear_model.logistic_regression import LogisticRegression
+    from si.io.csv import read_csv
+
+
+    breast_dataset = read_csv(r"C:\Users\Tiago\GitHub\Repositorio de Sistemas\Repositorio-Sistemas\datasets\breast-bin.csv",
+                        features=True, label=True)
 
     # load and split the dataset
-    dataset_ = Dataset.from_random(600, 100, 2)
+    dataset_ = breast_dataset
     dataset_train, dataset_test = train_test_split(dataset_, test_size=0.2)
 
     # initialize the KNN and Logistic classifier

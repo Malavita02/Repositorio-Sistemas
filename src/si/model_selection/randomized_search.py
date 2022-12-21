@@ -1,12 +1,32 @@
 import numpy as np
-import pandas as pd
-import sys
-sys.path.insert(0, 'src/si')
-from model_selection.cross_validate import cross_validate
-from data.dataset import Dataset
-from sklearn.preprocessing import StandardScaler
+from typing import Callable, Tuple, Dict, List, Any
+from si.model_selection.cross_validate import cross_validate
+from si.data.dataset import Dataset
 
-def randomized_search_cv(model, dataset: Dataset, parameter_grid, scoring = None, cv : int = 3, n_iter : int = 3, test_size : float = 0.2)-> dict[str, list[float]]:
+def randomized_search_cv(model, dataset: Dataset, parameter_grid: Dict[str, Tuple], scoring: Callable = None, cv : int = 3, n_iter : int = 3, test_size : float = 0.2) -> List[Dict[str, Any]]:
+    """
+    Performs a randomized search cross validation on a model.
+    Parameters
+    ----------
+    model
+        The model to cross validate.
+    dataset: Dataset
+        The dataset to cross validate on.
+    parameter_grid: Dict[str, Tuple]
+        The parameter grid to use.
+    scoring: Callable
+        The scoring function to use.
+    cv: int
+        The cross validation folds.
+    n_iter: int
+        The number of random combinations
+    test_size: float
+        The test size.
+    Returns
+    -------
+    scores: List[Dict[str, List[float]]]
+        The scores of the model on the dataset.
+    """
     #validade the parameter grid
     for parameter in parameter_grid:
         if not hasattr(model, parameter):
@@ -34,11 +54,13 @@ def randomized_search_cv(model, dataset: Dataset, parameter_grid, scoring = None
 
 if __name__ == '__main__':
     # import dataset
-    from data.dataset import Dataset
-    from linear_model.logistic_regression import LogisticRegression
+    from si.data.dataset import Dataset
+    from si.linear_model.logistic_regression import LogisticRegression
+    from si.io.csv import read_csv
 
     # load and split the dataset
-    dataset_ = Dataset.from_random(600, 100, 2)
+    dataset_ = read_csv(r"C:\Users\Tiago\GitHub\Repositorio de Sistemas\Repositorio-Sistemas\datasets\breast-bin.csv",
+                        features=True, label=True)
 
     # initialize the Logistic Regression model
     knn = LogisticRegression()
