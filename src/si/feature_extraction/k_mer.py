@@ -1,6 +1,5 @@
-import re
 import numpy as np
-from si.data.dataset import Dataset
+from src.si.data.dataset import Dataset
 import itertools
 from sklearn.preprocessing import StandardScaler
 
@@ -109,23 +108,16 @@ class KMer:
         return self.fit(dataset).transform(dataset)
 
 if __name__ == "__main__":
-    """dataset_ = Dataset(X=np.array([['ACTGTTTAGCGGA', 'ACTGTTTAGCGGA']]),
-                       y=np.array([1, 0]),
-                       features=['sequence'],
-                       label='label')
-    k_mer_ = KMer(k=3)
-    dataset_ = k_mer_.fit_transform(dataset_)
-    print(dataset_.X)
-    print(dataset_.features)"""
-    from si.model_selection.split import train_test_split
-    from si.linear_model.logistic_regression import LogisticRegression
-    from si.io.csv import read_csv
+    from src.si.model_selection.split import train_test_split
+    from src.si.linear_model.logistic_regression import LogisticRegression
+    from src.si.io.csv import read_csv
 
     tranposter = read_csv(r"C:\Users\Tiago\GitHub\Repositorio de Sistemas\Repositorio-Sistemas\datasets\transporters.csv", features= True, label=True)
-    k_mer_ = KMer(k=2, alphabet= "protein")
+    k_mer_ = KMer(k=2, alphabet="protein")
     dataset_ = k_mer_.fit_transform(tranposter)
+    dataset_.X = StandardScaler().fit_transform(dataset_.X)
     dataset_train, dataset_test = train_test_split(tranposter, test_size=0.2)
-    log_reg = LogisticRegression()
+    log_reg = LogisticRegression(max_iter=2000)
     log_reg.fit(dataset_train)
     score = log_reg.score(dataset_test)
     print(score)

@@ -1,6 +1,5 @@
 import numpy as np
 
-
 class Dense:
     """
     A dense layer is a layer where each neuron is connected to all neurons in the previous layer.
@@ -35,6 +34,7 @@ class Dense:
         # attributes
         self.weights = np.random.randn(input_size, output_size) * 0.01
         self.bias = np.zeros((1, output_size))
+        self.X = None
 
     def forward(self, X: np.ndarray) -> np.ndarray:
         """
@@ -49,15 +49,28 @@ class Dense:
         output: np.ndarray
             The output of the layer.
         """
+        self.X = X
         return np.dot(X, self.weights) + self.bias
 
     def backward(self, error: np.ndarray, learning_rate: float) -> np.ndarray:
         """
+
+        Parameters
+        ----------
+        error
+        learning_rate
+
+        Returns
+        -------
+
         """
-        return error
-    
-    def SoftMaxActivation(self, ):
-        pass
+        # Update the weight and bias
+        self.weights = self.weights - learning_rate * np.dot(self.X.T, error)
+        self.bias = self.bias - learning_rate * np.sum(error, axis=0)
+
+        # Error propagations return.
+        return np.dot(error, self.weights.T)
+
 
 
 class SigmoidActivation:
@@ -69,7 +82,8 @@ class SigmoidActivation:
         """
         Initialize the sigmoid activation layer.
         """
-        pass
+        # attributes
+        self.input_values = None
 
     def forward(self, X: np.ndarray) -> np.ndarray:
         """
@@ -89,4 +103,70 @@ class SigmoidActivation:
     def backward(self, error: np.ndarray, learning_rate: float) -> np.ndarray:
         """
         """
-        return error
+        sigmoid_derivative = 1 / (1 + np.exp(-learning_rate))
+        sigmoid_derivative = sigmoid_derivative * (1 - sigmoid_derivative)
+
+        # Get error from previous layer
+        return error * sigmoid_derivative
+
+
+class SoftMaxActivation:
+    """
+
+    """
+    def __init__(self):
+        pass
+
+    def forward(self, input_data: np.array):
+        """
+
+        Parameters
+        ----------
+        input_data
+
+        Returns
+        -------
+
+        """
+        ez = np.exp(input_data)
+        return ez / (np.sum(ez, keepdims=True))
+
+
+class ReLUActivation:
+    """
+
+    """
+    def __init__(self):
+        self.data = None
+
+    def forward(self, input_data: np.array):
+        """
+
+        Parameters
+        ----------
+        input_data:
+
+        Returns
+        -------
+
+        """
+
+        self.data = input_data
+        return np.maximum(input_data, 0)
+
+    def backward(self, error: np.ndarray, learning_rate: bool = 0.001):
+        """
+
+        Parameters
+        ----------
+        error:
+
+        learning_rate:
+
+
+        Returns
+        -------
+
+        """
+
+        return error * np.where(learning_rate > 0, 1, 0)

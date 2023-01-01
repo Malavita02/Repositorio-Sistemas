@@ -1,6 +1,6 @@
 import numpy as np
-from si.metrics.accuracy import accuracy
-from si.data.dataset import Dataset
+from src.si.metrics.accuracy import accuracy
+from src.si.data.dataset import Dataset
 
 class VotingClassifier:
     """
@@ -87,10 +87,10 @@ class VotingClassifier:
 
 if __name__ == '__main__':
     # import dataset
-    from si.model_selection.split import train_test_split
-    from si.neighbors.knn_classifier import KNNClassifier
-    from si.linear_model.logistic_regression import LogisticRegression
-    from si.io.csv import read_csv
+    from src.si.model_selection.split import train_test_split
+    from src.si.neighbors.knn_classifier import KNNClassifier
+    from src.si.linear_model.logistic_regression import LogisticRegression
+    from src.si.io.csv import read_csv
 
 
     breast_dataset = read_csv(r"C:\Users\Tiago\GitHub\Repositorio de Sistemas\Repositorio-Sistemas\datasets\breast-bin.csv",

@@ -1,6 +1,6 @@
 import numpy as np
 from scipy import stats
-from si.data.dataset import Dataset
+from src.si.data.dataset import Dataset
 from typing import Tuple, Union
 
 def f_classification(dataset: Dataset) -> Union[Tuple[np.ndarray, np.ndarray], Tuple[float, float]]:

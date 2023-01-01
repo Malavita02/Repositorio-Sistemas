@@ -1,6 +1,6 @@
 import numpy as np
-from si.model_selection.split import train_test_split
-from si.data.dataset import Dataset
+from src.si.model_selection.split import train_test_split
+from src.si.data.dataset import Dataset
 
 def cross_validate(model, dataset: Dataset, scoring = None, cv : int = 3, test_size: float = 0.2)-> dict [str, list[float]]:
     """
@@ -50,8 +50,8 @@ def cross_validate(model, dataset: Dataset, scoring = None, cv : int = 3, test_s
 
 if __name__ == '__main__':
     # import dataset
-    from si.data.dataset import Dataset
-    from si.neighbors.knn_classifier import KNNClassifier
+    from src.si.data.dataset import Dataset
+    from src.si.neighbors.knn_classifier import KNNClassifier
 
     # load and split the dataset
     dataset_ = Dataset.from_random(600, 100, 2)

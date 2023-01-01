@@ -1,6 +1,5 @@
 import numpy as np
-import pandas as pd
-from si.data.dataset import Dataset
+from src.si.data.dataset import Dataset
 
 class PCA:
     """
@@ -102,16 +101,9 @@ class PCA:
         return self.transform(dataset)
 
 if __name__ == "__main__":
-    """
-    dataset = Dataset(X=np.array([[0, 2, 0, 3],
-                                  [0, 1, 4, 3],
-                                  [0, 1, 1, 3]]),
-                      y=np.array([0, 1, 0]),
-                      features=["f1", "f2", "f3", "f4"],
-                      label="y")
-    """
+
     # test using iris.csv dataset
-    from si.io.csv import read_csv
+    from src.si.io.csv import read_csv
     dataset = read_csv(r"C:\Users\Tiago\GitHub\Repositorio de Sistemas\Repositorio-Sistemas\datasets\iris.csv", features=True, label= True)
     a = PCA(n_components = 2)
     print(a.fit_transform(dataset=dataset))

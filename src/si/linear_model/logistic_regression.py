@@ -1,7 +1,7 @@
 import numpy as np
-from si.data.dataset import Dataset
-from si.statistics.sigmoid_function import sigmoid_function
-from si.metrics.accuracy import accuracy
+from src.si.data.dataset import Dataset
+from src.si.statistics.sigmoid_function import sigmoid_function
+from src.si.metrics.accuracy import accuracy
 
 class LogisticRegression:
     """
@@ -140,11 +140,11 @@ class LogisticRegression:
 
 if __name__ == '__main__':
 
-    from si.model_selection.split import train_test_split
+    from src.si.model_selection.split import train_test_split
     # Exercicio 6.1)
     # load and split the dataset
     #dataset_ = Dataset.from_random(600, 100, 2)
-    from si.io.csv import read_csv
+    from src.si.io.csv import read_csv
     dataset_ = read_csv(r"C:\Users\Tiago\GitHub\Repositorio de Sistemas\Repositorio-Sistemas\datasets\breast-bin.csv", features=True, label= True)
     dataset_train, dataset_test = train_test_split(dataset_, test_size=0.2)
 

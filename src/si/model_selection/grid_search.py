@@ -1,6 +1,6 @@
 from typing import Callable, Tuple, Dict, List, Any
-from si.model_selection.cross_validate import cross_validate
-from si.data.dataset import Dataset
+from src.si.model_selection.cross_validate import cross_validate
+from src.si.data.dataset import Dataset
 import itertools
 
 def grid_search(model, dataset: Dataset, parameter_grid: Dict[str, Tuple], scoring: Callable = None, cv : int = 3, test_size : float = 0.2) -> List[Dict[str, Any]]:
@@ -48,9 +48,12 @@ def grid_search(model, dataset: Dataset, parameter_grid: Dict[str, Tuple], scori
         scores.append(score)
     return scores
 
+
+
+
 if __name__ == '__main__':
     # import dataset
-    from si.linear_model.logistic_regression import LogisticRegression
+    from src.si.linear_model.logistic_regression import LogisticRegression
 
     # load and split the dataset
     dataset_ = Dataset.from_random(600, 100, 2)

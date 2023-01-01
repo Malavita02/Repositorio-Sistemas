@@ -1,6 +1,5 @@
-from pyexpat import features
 import numpy as np
-from si.data.dataset import Dataset
+from src.si.data.dataset import Dataset
 
 class VarianceThreshold:
     """

@@ -1,8 +1,8 @@
 import numpy as np
-from si.data.dataset import Dataset
+from src.si.data.dataset import Dataset
 from typing import Callable, Union
-from si.statistics.euclidean_distance import euclidean_distance
-from si.metrics.rmse import rmse
+from src.si.statistics.euclidean_distance import euclidean_distance
+from src.si.metrics.rmse import rmse
 
 class KNNRegressor:
     """
@@ -107,8 +107,8 @@ class KNNRegressor:
         return rmse(dataset.y, prediction)
 
 if __name__ == '__main__':
-    from si.model_selection.split import train_test_split
-    from si.io.csv import read_csv
+    from src.si.model_selection.split import train_test_split
+    from src.si.io.csv import read_csv
     # import dataset cpu.csv
     dataset = read_csv(r"C:\Users\Tiago\GitHub\Repositorio de Sistemas\Repositorio-Sistemas\datasets\cpu.csv",
                        features=True, label=True)

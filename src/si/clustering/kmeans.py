@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Callable
-from si.data.dataset import Dataset
-from si.statistics.euclidean_distance import euclidean_distance
+from src.si.data.dataset import Dataset
+from src.si.statistics.euclidean_distance import euclidean_distance
 
 class KMeans:
     """
@@ -80,7 +80,7 @@ class KMeans:
         return np.apply_along_axis(self.get_closest_centroid, axis=1, arr=dataset.X)
 
 if __name__ == "__main__":
-    from si.data.dataset import Dataset
+    from src.si.data.dataset import Dataset
     dataset_ = Dataset.from_random(100, 5)
 
     k_ = 3
@@ -89,13 +89,3 @@ if __name__ == "__main__":
     predictions = kmeans.predict(dataset_)
     print(res.shape)
     print(predictions.shape)
-    """
-    a = KMeans(2, 10)
-    dataset = Dataset(X=np.array([[0, 2, 0, 3],
-                                  [0, 1, 4, 3],
-                                  [0, 1, 1, 3]]),
-                      y=np.array([0, 1, 0]),
-                      features=["f1", "f2", "f3", "f4"],
-                      label="y")
-    a.fit(dataset=dataset)
-    print(a.get_closest_centroid([[1, 2, 3, 4], [2, 3, 7, 9]]))"""

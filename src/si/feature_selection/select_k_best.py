@@ -1,10 +1,10 @@
 import numpy as np
-from si.data.dataset import Dataset
+from src.si.data.dataset import Dataset
 from typing import Callable
-from si.statistics.f_classification import f_classification
+from src.si.statistics.f_classification import f_classification
 
 
-class SelectKBbest:
+class SelectKBest:
     """
     Select features according to the k highest scores.
     Feature ranking is performed by computing the scores of each feature using a scoring function:
@@ -87,7 +87,7 @@ class SelectKBbest:
         return self.transform(dataset)
 
 if __name__ == "__main__":
-    a = SelectKBbest(k = 3)
+    a = SelectKBest(k = 3)
     dataset = Dataset(X=np.array([[0, 2, 0, 3],
                                   [0, 1, 4, 3],
                                   [0, 1, 1, 3]]),

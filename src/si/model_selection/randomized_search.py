@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Callable, Tuple, Dict, List, Any
-from si.model_selection.cross_validate import cross_validate
-from si.data.dataset import Dataset
+from src.si.model_selection.cross_validate import cross_validate
+from src.si.data.dataset import Dataset
 
 def randomized_search_cv(model, dataset: Dataset, parameter_grid: Dict[str, Tuple], scoring: Callable = None, cv : int = 3, n_iter : int = 3, test_size : float = 0.2) -> List[Dict[str, Any]]:
     """
@@ -54,9 +54,9 @@ def randomized_search_cv(model, dataset: Dataset, parameter_grid: Dict[str, Tupl
 
 if __name__ == '__main__':
     # import dataset
-    from si.data.dataset import Dataset
-    from si.linear_model.logistic_regression import LogisticRegression
-    from si.io.csv import read_csv
+    from src.si.data.dataset import Dataset
+    from src.si.linear_model.logistic_regression import LogisticRegression
+    from src.si.io.csv import read_csv
 
     # load and split the dataset
     dataset_ = read_csv(r"C:\Users\Tiago\GitHub\Repositorio de Sistemas\Repositorio-Sistemas\datasets\breast-bin.csv",

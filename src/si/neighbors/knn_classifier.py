@@ -1,8 +1,8 @@
 import numpy as np
 from typing import Callable, Union
-from si.data.dataset import Dataset
-from si.statistics.euclidean_distance import euclidean_distance
-from si.metrics.accuracy import accuracy
+from src.si.data.dataset import Dataset
+from src.si.statistics.euclidean_distance import euclidean_distance
+from src.si.metrics.accuracy import accuracy
 
 class KNNClassifier:
     """
@@ -109,7 +109,7 @@ class KNNClassifier:
         return accuracy(dataset.y, prediction)
 
 if __name__ == '__main__':
-    from si.model_selection.split import train_test_split
+    from src.si.model_selection.split import train_test_split
 
     # load and split the dataset
     dataset_ = Dataset.from_random(600, 100, 2)
